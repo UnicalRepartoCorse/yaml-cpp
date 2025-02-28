@@ -38,7 +38,7 @@ cmake_dependent_option(YAML_MSVC_SHARED_RT
   "CMAKE_SYSTEM_NAME MATCHES Windows" OFF)
 set(YAML_CPP_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/yaml-cpp"
   CACHE STRING "Path to install the CMake package to")
- 
+
 if (YAML_CPP_FORMAT_SOURCE)
     find_program(YAML_CPP_CLANG_FORMAT_EXE NAMES clang-format)
 endif()
@@ -183,6 +183,15 @@ if (YAML_CPP_INSTALL)
   install(FILES "${PROJECT_BINARY_DIR}/yaml-cpp.pc"
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 endif()
+
+install(TARGETS yaml-cpp
+    ARCHIVE DESTINATION lib    # per librerie statiche (.a)
+    LIBRARY DESTINATION lib    # per librerie condivise (.so o .dll)
+    RUNTIME DESTINATION bin    # per eseguibili, se presenti
+)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
+    DESTINATION include
+)
 
 if(YAML_CPP_BUILD_TESTS)
   add_subdirectory(test)
